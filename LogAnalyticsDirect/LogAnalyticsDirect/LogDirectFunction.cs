@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -22,9 +23,12 @@ namespace LogAnalyticsDirect
         {
             Address address = CreateAddress();
 
-            await _logAnalyticsService.SendDataAsync(address);
+            if (await _logAnalyticsService.SendDataAsync(address))
+            {
+                return new OkObjectResult("Logged an address!");
+            }
 
-            return new OkObjectResult("Logged an address!");
+            return new InternalServerErrorResult();
         }
 
         [FunctionName("LogPerson")]
@@ -32,9 +36,12 @@ namespace LogAnalyticsDirect
             Address address = CreateAddress();
             Person person = CreatePerson(address);
 
-            await _logAnalyticsService.SendDataAsync(person);
+            if (await _logAnalyticsService.SendDataAsync(person))
+            {
+                return new OkObjectResult("Logged a person!");
+            }
 
-            return new OkObjectResult("Logged a person!");
+            return new InternalServerErrorResult();
         }
 
 
@@ -43,9 +50,10 @@ namespace LogAnalyticsDirect
             Random rand = new Random(DateTime.Now.Millisecond);
             var person = new Person
             {
-                FirstName = $"FirstName{rand.Next(1, 5000)}",
+                FirstName = rand.Next(1,100) > 50 ? "John" : "Jane",
                 LastName =  $"LastName{rand.Next(1, 5000)}",
-                Age = rand.Next(12, 65),
+                Age = rand.Next(12, 95),
+                // Age = new Age(rand.Next(12, 95)),
                 Address = address,
                 TimeCreated = DateTime.Now
             };
