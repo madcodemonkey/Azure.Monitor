@@ -1,0 +1,11 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "LogAnalyticsLogName": "YatesLog",
+    "LogAnalyticsSharedKey": "--Your shared key here--",
+    "LogAnalyticsUrlFormat": "https://{0}.ods.opinsights.azure.com/api/logs?api-version=2016-04-01",
+    "LogAnalyticsWorkspaceID": "--Your workspace id here--"
+  }
+}
