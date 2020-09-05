@@ -62,8 +62,8 @@ namespace AppInsightsDirect
         }
 
 
-        [FunctionName("TelemetryTests")]
-        public IActionResult TelemetryTesting(
+        [FunctionName("TelemetryTraceTests")]
+        public IActionResult TelemetryTraceTesting(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -76,14 +76,43 @@ namespace AppInsightsDirect
 
             _telemetryClient.TrackTrace("This is TrackTrace WITH a dictionary",SeverityLevel.Warning, properties);
             
-            _telemetryClient.TrackException(new IndexOutOfRangeException("TrackException Outer index out of range",
-                new EndOfStreamException("TrackException Inner stream exception")));
-           _telemetryClient.TrackException(new IndexOutOfRangeException("TrackException with Dictionary. Outer index out of range",
-                new EndOfStreamException("TrackException with dictionary Inner stream exception")), properties);
-
-            return new OkObjectResult("Telemetry tests ran");
+            return new OkObjectResult("Telemetry trace tests ran");
         }
 
+        [FunctionName("TelemetryEventTests")]
+        public IActionResult TelemetryEventTesting(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            _telemetryClient.TrackEvent("This is a TrackTrace with no dictionary!");
+
+            var properties = new Dictionary<string, string>();
+            properties.Add("MyDate", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            properties.Add("MyNumber", "23");
+            properties.Add("MyJson", "{ \"FirstName\": \"James\", \"LastName\": \"Brown\"  }");
+
+            _telemetryClient.TrackEvent("This is TrackTrace WITH a dictionary", properties);
+            
+            return new OkObjectResult("Telemetry event tests ran");
+        }
+
+        [FunctionName("TelemetryExceptionTests")]
+        public IActionResult TelemetryExcepotionTesting(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            var properties = new Dictionary<string, string>();
+            properties.Add("MyDate", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            properties.Add("MyNumber", "39");
+            properties.Add("MyJson", "{ \"FirstName\": \"Bob\", \"LastName\": \"Hope\"  }");
+            
+            _telemetryClient.TrackException(new IndexOutOfRangeException("TrackException Outer index out of range",
+                new EndOfStreamException("TrackException Inner stream exception")));
+            _telemetryClient.TrackException(new IndexOutOfRangeException("TrackException with Dictionary. Outer index out of range",
+                new EndOfStreamException("TrackException with dictionary Inner stream exception")), properties);
+           
+            return new OkObjectResult("Telemetry exception tests ran");
+        }
    
     }
 }
