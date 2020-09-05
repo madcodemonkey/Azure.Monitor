@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AppInsightsDemo.Core
+namespace AppInsightsDirect.Core
 {
     public interface IDoSomeMath
     {

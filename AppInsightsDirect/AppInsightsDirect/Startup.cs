@@ -1,9 +1,9 @@
-﻿using AppInsightsDemo.Core;
+﻿using AppInsightsDirect.Core;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(AppInsightsDemo.Startup))]
-namespace AppInsightsDemo
+[assembly: FunctionsStartup(typeof(AppInsightsDirect.Startup))]
+namespace AppInsightsDirect
 {
     public class Startup : FunctionsStartup
     {
