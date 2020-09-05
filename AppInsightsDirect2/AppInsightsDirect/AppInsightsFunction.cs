@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using AppInsightsDirect.Core;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -66,14 +67,14 @@ namespace AppInsightsDirect
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            _telemetryClient.TrackTrace("This is a TrackTrace with no dictionary!");
+            _telemetryClient.TrackTrace("This is a TrackTrace with no dictionary!", SeverityLevel.Warning);
 
             var properties = new Dictionary<string, string>();
             properties.Add("MyDate", DateTime.Now.ToString(CultureInfo.InvariantCulture));
             properties.Add("MyNumber", "34");
             properties.Add("MyJson", "{ \"FirstName\": \"George\", \"LastName\": \"Marshall\"  }");
 
-            _telemetryClient.TrackTrace("This is TrackTrace WITH a dictionary", properties);
+            _telemetryClient.TrackTrace("This is TrackTrace WITH a dictionary",SeverityLevel.Warning, properties);
             
             _telemetryClient.TrackException(new IndexOutOfRangeException("TrackException Outer index out of range",
                 new EndOfStreamException("TrackException Inner stream exception")));
