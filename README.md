@@ -1,27 +1,18 @@
-# Application Insights and Log Analytics (Azure Function logging)
+# Azure Monitor
 
-These demos show how to setup application insights and log analytics to receive 
-logging from an Azure Function.  It shows what is received and where it is logged.
+Contains Azure Monitor demos.  Here is a break down by project
 
-# Agenda
-## Application Insights
-### Logging with just an instrumentation key
-Topics
-- ILogger
-- Exception bubbles out
-- Forwarding data to a Log Analytics workspace (preview) 
+# AppInsightsDirect
+Demostrates an Azure Function using the ILogger and Application Insights NuGet package.
 
-### Logging with the NuGet package installed
-Topics
-- ILogger
-- Exception bubbles out
-- TrackTrace
-- TrackException
+# AppInsightsSerilog
+Demostrates an Azure Function using the ILogger, which has been override by Serilog.
 
-### Logging with the Serilog Sink for Application Insights
+# LogAnalyticsDirect
+This is not a recommended approach, but demonstrates send raw JSON into the Log Analytics endpoint.
+The purpose of this demo is to show:
+- The JSON you send is flattened
+- If you change the shape of your JSON, things don't get logged.
 
-## Log Analytics
-- Logging JSON directly via ILogger
-- Logging with the Serilog Sink for Log Analytics via ILogger
-
-
+# LogAnalyticsSerilog
+Shows the Serilog sink for Log Analytics in action.

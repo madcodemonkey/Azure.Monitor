@@ -24,7 +24,7 @@ namespace LogAnalyticsSerilog
         {
             Address address = CreateAddress();
 
-            log.LogInformation("This is an address {@address}", address);
+            log.LogInformation("This is an address {@TheAddress}", address);
 
             return new OkObjectResult("Logged an address!");
         }
@@ -35,7 +35,7 @@ namespace LogAnalyticsSerilog
             Address address = CreateAddress();
             Person person = CreatePerson(address);
 
-            log.LogInformation("This is an address {@person}", person);
+            log.LogInformation("This is an person {@ThePerson}", person);
 
             return new OkObjectResult("Logged a person!");
         }
@@ -66,6 +66,23 @@ namespace LogAnalyticsSerilog
 
             return new OkObjectResult("ILogger tests ran");
         }
+
+        [FunctionName("LoggingWithScope")]
+        public IActionResult LoggingWithScopeTesting(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            using (log.BeginScope("MyScope is great!"))
+            {
+                log.LogInformation("Something happened.");
+                log.LogInformation("Something else happened {myCount} times!", 78);
+                log.LogCritical(new ArgumentException("Outer scope exception here", new FileNotFoundException("Inner scope exception", "DatFile.dat")), "Scope! This is a LogCritical with an exception");
+            }
+            
+            return new OkObjectResult("ILogger logging with scope ran");
+        }
+
+
 
         [FunctionName("ExceptionTest")]
         public IActionResult ExceptionTesting(

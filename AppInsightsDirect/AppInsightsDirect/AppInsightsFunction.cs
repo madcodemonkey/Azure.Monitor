@@ -51,6 +51,23 @@ namespace AppInsightsDirect
             return new OkObjectResult("ILogger tests ran");
         }
 
+        [FunctionName("LoggingWithScope")]
+        public IActionResult LoggingWithScopeTesting(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            using (log.BeginScope("MyScope is great!"))
+            {
+                log.LogInformation("Something happened.");
+                log.LogInformation("Something else happened {myCount} times!", 78);
+                log.LogCritical(new ArgumentException("Outer scope exception here", new FileNotFoundException("Inner scope exception", "DatFile.dat")), "Scope! This is a LogCritical with an exception");
+            }
+            
+            return new OkObjectResult("ILogger logging with scope ran");
+        }
+
+
+
         [FunctionName("ExceptionTest")]
         public IActionResult ExceptionTesting(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
