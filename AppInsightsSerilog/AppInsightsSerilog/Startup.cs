@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
 
 [assembly: FunctionsStartup(typeof(AppInsightsSerilog.Startup))]
@@ -18,10 +19,11 @@ namespace AppInsightsSerilog
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .MinimumLevel.ControlledBy(GetLoggingLevelSwitch())
+                //.Enrich.WithExceptionDetails() 
                 // .Enrich.With<MyExceptionDetailEnricher>()
                 .WriteTo.Console(new CompactJsonFormatter())
-                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
-                // .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Events)
+                //.WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
+                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Events)
                 .CreateLogger();
 
             // Notes

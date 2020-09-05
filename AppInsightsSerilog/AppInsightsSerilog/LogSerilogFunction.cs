@@ -35,7 +35,7 @@ namespace AppInsightsSerilog
             Address address = CreateAddress();
             Person person = CreatePerson(address);
 
-            log.LogInformation("This is an address {@person}", person);
+            log.LogInformation("This is an person {@person}", person);
 
             return new OkObjectResult("Logged a person!");
         }
